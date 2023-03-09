@@ -65,7 +65,7 @@ public class AnagramCommandLineRunner implements CommandLineRunner {
     /**
      * Return true if 2 words are Anagrams
      */
-    static boolean isAnagram(String firstWord, String secondWord) {
+    private boolean isAnagram(String firstWord, String secondWord) {
 
         boolean isAnagram = true;
 
@@ -87,7 +87,7 @@ public class AnagramCommandLineRunner implements CommandLineRunner {
         return isAnagram;
     }
 
-    public static int[] countCharFrequencyIgnoreCase(char[] arrays) {
+    private int[] countCharFrequencyIgnoreCase(char[] arrays) {
         int[] size = new int[26];
         for (int i = 0; i < arrays.length; i++) {
             size[Character.toLowerCase(arrays[i]) - 'a']++;
