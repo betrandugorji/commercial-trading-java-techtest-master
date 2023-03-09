@@ -61,38 +61,34 @@ public class AnagramCommandLineRunner implements CommandLineRunner {
         map.putIfAbsent(String.join("", set), set);
         return map;
     }
-
+    
     /**
-     * Return true if 2 words are Anagrams
+     * Return true if firstWord and secondWord are Anagrams 
+     * Reuse size so that storage cost is O(1) which is a better solution
      */
     private boolean isAnagram(String firstWord, String secondWord) {
-
-        boolean isAnagram = true;
 
         if (firstWord.length() != secondWord.length()) {
             return false;
         }
 
-        char firstArray[] = firstWord.toCharArray();
-        char secondArray[] = secondWord.toCharArray();
+        int[] size = new int[26];
 
-        int firstCountedArrays[] = countCharFrequencyIgnoreCase(firstArray);
-        int secondCountedArrays[] = countCharFrequencyIgnoreCase(secondArray);
+        for (int i = 0; i < firstWord.toCharArray().length; i++) {
+            size[Character.toLowerCase(firstWord.toCharArray()[i]) - 'a']++;
+        }
 
-        for (int i = 0; i < firstCountedArrays.length; i++) {
-            if (firstCountedArrays[i] != secondCountedArrays[i]) {
-                isAnagram = false;
+        for (int i = 0; i < secondWord.toCharArray().length; i++) {
+            size[Character.toLowerCase(secondWord.toCharArray()[i]) - 'a']--;
+        }
+
+        for (int i = 0; i < size.length; i++) {
+            if (size[i] != 0) {
+                return false;
             }
         }
-        return isAnagram;
-    }
-
-    private int[] countCharFrequencyIgnoreCase(char[] arrays) {
-        int[] size = new int[26];
-        for (int i = 0; i < arrays.length; i++) {
-            size[Character.toLowerCase(arrays[i]) - 'a']++;
-        }
-        return size;
+        
+        return true;
     }
 
 }
