@@ -1,7 +1,5 @@
 package com.global.commtech.test.anagramfinder;
 
-import com.google.common.collect.HashMultiset;
-import com.google.common.collect.Multiset;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -58,30 +56,43 @@ public class AnagramCommandLineRunner implements CommandLineRunner {
                     return j;
                 }).forEachOrdered(_item -> {
         });
-        
+
         //Make the set result the key to avoid duplicates
         map.putIfAbsent(String.join("", set), set);
         return map;
     }
 
     /**
-     * No need to re-invent the wheels so use Google guava:guava library that
-     * solves O(n) time problem Return true if 2 words are Anagrams Use
+     * Return true if 2 words are Anagrams
      */
-    private boolean isAnagram(String firstWord, String secondWord) {
+    static boolean isAnagram(String firstWord, String secondWord) {
+
+        boolean isAnagram = true;
 
         if (firstWord.length() != secondWord.length()) {
             return false;
         }
 
-        final Multiset<Character> seta = HashMultiset.create();
-        final Multiset<Character> setb = HashMultiset.create();
+        char firstArray[] = firstWord.toCharArray();
+        char secondArray[] = secondWord.toCharArray();
 
-        for (int i = 0; i < firstWord.length(); i++) {
-            seta.add(firstWord.charAt(i));
-            setb.add(secondWord.charAt(i));
+        int firstCountedArrays[] = countCharFrequencyIgnoreCase(firstArray);
+        int secondCountedArrays[] = countCharFrequencyIgnoreCase(secondArray);
+
+        for (int i = 0; i < firstCountedArrays.length; i++) {
+            if (firstCountedArrays[i] != secondCountedArrays[i]) {
+                isAnagram = false;
+            }
         }
-
-        return seta.equals(setb);
+        return isAnagram;
     }
+
+    public static int[] countCharFrequencyIgnoreCase(char[] arrays) {
+        int[] size = new int[26];
+        for (int i = 0; i < arrays.length; i++) {
+            size[Character.toLowerCase(arrays[i]) - 'a']++;
+        }
+        return size;
+    }
+
 }
